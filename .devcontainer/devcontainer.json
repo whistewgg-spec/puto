@@ -2,6 +2,11 @@
   "name": "Virtual PC",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true,
+      "dockerDashComposeVersion": "v2"
+    },
     "ghcr.io/devcontainers/features/desktop-lite:1": {
       "version": "latest",
       "password": "virtual123",
@@ -9,10 +14,10 @@
       "vncPort": "5901"
     }
   },
-  "forwardPorts": [6080, 5901],
+  "forwardPorts": [6080, 5901, 8006, 3389],
   "portsAttributes": {
     "6080": {
-      "label": "Desktop (noVNC)",
+      "label": "Desktop Linux (noVNC)",
       "onAutoForward": "silent",
       "visibility": "public"
     },
@@ -20,8 +25,19 @@
       "label": "VNC",
       "onAutoForward": "silent",
       "visibility": "public"
+    },
+    "8006": {
+      "label": "Desktop Windows (noVNC)",
+      "onAutoForward": "silent",
+      "visibility": "public"
+    },
+    "3389": {
+      "label": "Windows RDP",
+      "onAutoForward": "silent",
+      "visibility": "public"
     }
   },
   "postCreateCommand": "bash .devcontainer/setup.sh",
-  "remoteUser": "root"
+  "remoteUser": "root",
+  "runArgs": ["--privileged", "--device=/dev/kvm"]
 }
